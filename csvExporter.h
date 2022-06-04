@@ -11,7 +11,7 @@
 
 char output_path[] = ".\\output";
 
-void exportToCsvEP(int *ns, double *times[], char** js, int n, int jn, char *exerciseName);
+void exportToCsvEP(int *ns, double *times[], char** js, long** values, int n, int jn, char *exerciseName);
 
 void checkSubdirectory(char *path);
 
@@ -25,7 +25,7 @@ void checkSubdirectory(char *path)
     }
 }
 
-void exportToCsvEP(int *ns, double *times[], char** js, int n, int jn, char *exerciseName)
+void exportToCsvEP(int *ns, double *times[], char** js, long** values, int n, int jn, char *exerciseName)
 {
     checkSubdirectory(output_path);
 
@@ -48,7 +48,7 @@ void exportToCsvEP(int *ns, double *times[], char** js, int n, int jn, char *exe
 
     fprintf(csv, "Number of elements");
     for(i = 0; i < jn; i++)
-        fprintf(csv, ", Execution time for %sf", js[i]);
+        fprintf(csv, ", Execution time for %s, Value for %s", js[i], js[i]);
 
     fprintf(csv, "\n");
 
@@ -56,7 +56,7 @@ void exportToCsvEP(int *ns, double *times[], char** js, int n, int jn, char *exe
     {
         fprintf(csv, "%d", ns[i]);
         for(j = 0; j < jn; j++)
-            fprintf(csv, ", %f", times[j][i]);
+            fprintf(csv, ", %f, %ld", times[j][i], values[j][i]);
 
         fprintf(csv, "\n");
     }

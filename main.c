@@ -24,12 +24,14 @@ int main()
 
     int *ns;
     double *times[jn];
+    long *results[jn];
     ns = (int *)calloc(steps, sizeof(int));
     for (i = 0; i < jn; i++)
+    {
         times[i] = calloc(steps, sizeof(double));
-        
+        results[i] = calloc(steps, sizeof(long));
+    }
     printf("\nTimes:\n");
-
 
     for (i = 0; i < steps; i++)
     {
@@ -37,7 +39,10 @@ int main()
         ns[i] = n;
 
         for (j = 0; j < jn; j++)
+        {
             times[j][i] = 0;
+            results[j][i] = 0;
+        }
 
         printf("%d -> ", n);
 
@@ -45,12 +50,14 @@ int main()
         {
             initProblem(n, r);
 
-            for (j = 0; j < jn; j++)
+            for (j = 1; j < jn; j++)
             {
+                int val;
                 clock_t begin = clock();
-                algos[j](capacity, weights, values, probelmSize);
+                val = algos[j](capacity, weights, values, probelmSize);
                 clock_t end = clock();
 
+                results[j][i] += val;
                 times[j][i] += (double)(end - begin) / CLOCKS_PER_SEC * 1000;
             }
 
@@ -59,14 +66,15 @@ int main()
 
         for (j = 0; j < jn; j++)
         {
+            results[j][i] /= runs;
             times[j][i] /= runs;
-            printf("%fms, ", times[j][i]);
+            printf("%ld => %fms, ", results[j][i], times[j][i]);
         }
 
         printf("\n");
     }
 
-    exportToCsvEP(ns, times, algosNames, steps, jn, "KnapSackProblem");
+    exportToCsvEP(ns, times, algosNames, results, steps, jn, "KnapSackProblem");
 
     free(ns);
     for (i = 0; i < jn; i++)
