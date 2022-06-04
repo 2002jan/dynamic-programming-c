@@ -50,7 +50,7 @@ int main()
         {
             initProblem(n, r);
 
-            for (j = 1; j < jn; j++)
+            for (j = 0; j < jn; j++)
             {
                 int val;
                 clock_t begin = clock();
