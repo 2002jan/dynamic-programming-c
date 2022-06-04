@@ -1,10 +1,7 @@
 #ifndef BRUTE_FORCE_KNAPSACK
 #define BRUTE_FORCE_KNAPSACK
 
-int max(int a, int b)
-{
-    return (a > b) ? a : b;
-}
+#include "max.h"
 
 int KnapSackBruteForce(int W, int *weights, int *vals, int n)
 {
