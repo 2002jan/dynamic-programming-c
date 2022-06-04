@@ -34,15 +34,12 @@ void initProblem(int n, int i)
 
     sscanf(buffer, "%d", &capacity);
 
-    printf("%d\n", capacity);
-
     int j;
 
     for (j = 0; j < probelmSize; j++)
     {
         fgets(buffer, 128, input);
         sscanf(buffer, "%d %d", weights + j, values + j);
-        printf("%d %d\n", weights[j], values[j]);
     }
 
     fclose(input);
