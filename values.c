@@ -15,35 +15,37 @@ int main()
     int i, r, j, jn = 3, runs = 10, step = 20, steps = 30, b = 0;
 
     char *algosNames[jn];
-    algosNames[1] = "Dynamic";
-    algosNames[2] = "Value Greedy";
-    algosNames[3] = "Weight Greedy";
+    algosNames[0] = "Dynamic";
+    algosNames[1] = "Value Greedy";
+    algosNames[2] = "Weight Greedy";
 
     const findKnapSackSolution algos[] = {KanpSackDynamic, KnapSackValueGreedy, KnapSackWeightGreedy};
 
-    int *ns;
-    double *times[jn];
     long *results[jn];
-    ns = (int *)calloc(steps, sizeof(int));
     for (i = 0; i < jn; i++)
     {
-        times[i] = calloc(steps, sizeof(double));
         results[i] = calloc(steps, sizeof(long));
     }
     printf("\nTimes:\n");
 
+    FILE * outputf = fopen(".\\output\\values.csv", "w");
+
+    if(outputf == NULL)
+    {
+        printf("Error file file opening was happening");
+        return 1;
+    }
+
+    fprintf(outputf, "n, r, Value for %s, Value for %s, Value for %s, Percentage for %s, Percentage for %s\n", algosNames[0], algosNames[1], algosNames[2], algosNames[1], algosNames[2]);
+
     for (i = 0; i < steps; i++)
     {
         int n = step * (i + 1);
-        ns[i] = n;
 
         for (j = 0; j < jn; j++)
         {
-            times[j][i] = 0;
             results[j][i] = 0;
         }
-
-        printf("%d -> ", n);
 
         for (r = 1; r <= runs; r++)
         {
@@ -51,33 +53,22 @@ int main()
 
             for (j = 0; j < jn; j++)
             {
-                int val;
-                clock_t begin = clock();
-                val = algos[j](capacity, weights, values, probelmSize);
-                clock_t end = clock();
-
-                results[j][i] += val;
-                times[j][i] += (double)(end - begin) / CLOCKS_PER_SEC * 1000;
+                results[j][i] = algos[j](capacity, weights, values, probelmSize);
             }
 
             clearProblem();
-        }
 
-        for (j = 0; j < jn; j++)
-        {
-            results[j][i] /= runs;
-            times[j][i] /= runs;
-            printf("%ld => %fms, ", results[j][i], times[j][i]);
+            printf("%d.%d %f %f\n", n, r, (double)results[1][i] / (double)results[0][i], (double)results[2][i] / (double)results[0][i]);
+            fprintf(outputf, "%d, %d, %d, %d, %d, %lf, %lf\n", n, r, results[0][i], results[1][i], results[2][i], (double)results[1][i] / (double)results[0][i], (double)results[2][i] / (double)results[0][i] );
         }
 
         printf("\n");
     }
 
-    exportToCsvEP(ns, times, algosNames, results, steps, jn, "KnapSackProblem");
+    fclose(outputf);
 
-    free(ns);
     for (i = 0; i < jn; i++)
-        free(times[i]);
+        free(results[i]);
 
     return 0;
 }

@@ -10,14 +10,14 @@ def appendvalue(values, targetLen):
         values.append(random.randrange(1, 100))
     return values
 
-numofitems = [x for x in range(20, 620, 20)]
+numofitems = [x for x in range(2, 62, 2)]
 
 if not os.path.isdir("problem_instances"):
     os.mkdir("problem_instances")
 
 for i in numofitems:
     for x in range(10):
-        capacity = random.randrange(50, i*4)
+        capacity = random.randrange(6, i*4)
 
         weights = []
         appendweight(weights, i)

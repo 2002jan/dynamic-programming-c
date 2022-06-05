@@ -12,14 +12,15 @@ typedef int (*findKnapSackSolution)(int, int *, int *s, int);
 
 int main()
 {
-    int i, r, j, jn = 3, runs = 10, step = 20, steps = 30, b = 0;
+    int i, r, j, jn = 4, runs = 10, step = 2, steps = 30;
 
     char *algosNames[jn];
+    algosNames[0] = "Dynamic";
     algosNames[1] = "Dynamic";
     algosNames[2] = "Value Greedy";
     algosNames[3] = "Weight Greedy";
 
-    const findKnapSackSolution algos[] = {KanpSackDynamic, KnapSackValueGreedy, KnapSackWeightGreedy};
+    const findKnapSackSolution algos[] = {KnapSackBruteForce, KanpSackDynamic, KnapSackValueGreedy, KnapSackWeightGreedy};
 
     int *ns;
     double *times[jn];
@@ -73,7 +74,7 @@ int main()
         printf("\n");
     }
 
-    exportToCsvEP(ns, times, algosNames, results, steps, jn, "KnapSackProblem");
+    exportToCsvEP(ns, times, algosNames, results, steps, jn, "KnapSackProblemSml");
 
     free(ns);
     for (i = 0; i < jn; i++)
